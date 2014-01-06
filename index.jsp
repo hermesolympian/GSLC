@@ -20,8 +20,15 @@
             // here you can make the height, I delete it first, then I make it again
             iFrameID.height = "";
             iFrameID.height = (iFrameID.contentWindow.document.body.scrollHeight+100) + "px";
-      }   
+      }
   }
+  
+	  function export2XLS(){
+	  var dtltbl = document.getElementById('result').contentDocument.getElementsByTagName('body')[0];
+	  window.open('data:application/vnd.ms-excel,' + encodeURIComponent('<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">'+
+	  '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Sheet1>{worksheet}</x:Sheet1><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml></head>'+
+	  '<body><table>'+dtltbl.innerHTML+'</table></body></html>'));
+	  }
 </script>
 </head>
 
@@ -29,13 +36,13 @@
 <CENTER><H3>Inquiry Transaction<H3></CENTER><br/>
 <div ID="option" style="padding-left:30px">
 <form method="post" action="index.jsp">
-Start Date: <select id="cboStartDay" name="cboStartDay" style="width=30px;" onchange="this.form.submit()">
+Start Date: <select id="cboStartDay" name="cboStartDay" onchange="this.form.submit()">
 <% 
 String[] index = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 String[] month = {"January","February","March","April","May","June","July","August","September","October","November","December"};
 int startDay,options;
-if(request.getParameter("cboStartDay").equals("null"))
-	startDay=0;
+if(request.getParameter("cboStartDay") == null)
+	startDay=1;
 else
 	startDay=Integer.parseInt(request.getParameter("cboStartDay"));
 for(int a=0;a<12;){
@@ -49,14 +56,16 @@ else {
 <%}}%>
 </select>
 </form>
-End Date: <select id="cboEndDay" name="cboEndDay" style="width=30px;margin-left:6px;">
-<% 
+End Date: <select id="cboEndDay" name="cboEndDay" style="margin-left:7px;">
+<%
 for(int a=startDay-1;a<12;){
 %>
 <option value="<%=index[a]%>"><%=month[a++]%></option>
 <%}%>
 </select>
-<select id="cboYear">
+<br />
+Year: 
+<select id="cboYear" style="margin-left:34px;">
 <option value="2013">2013</option>
 <option value="2014">2014</option>
 <option value="2015">2015</option>
@@ -67,7 +76,8 @@ for(int a=startDay-1;a<12;){
 <option value="1">SUM</option>
 <option value="2">AVERAGE</option>
 </select>
-<input type="button" value="Process" id="process" onClick="reload()" />
+<input type="button" value="Load Data" id="process" onClick="reload()" />
+<input type="button" value="Export to XLS" id="export" onClick="export2XLS()" />
 </div>
 <br />
 <iframe id="result" onload="iframeLoaded()" style="margin-left:100px;width:800px;"frameBorder = "0px">
