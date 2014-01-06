@@ -15,12 +15,12 @@
 		"from TrHeader inner join TrDetail on TrHeader.IDHeader=TrDetail.IDHeader "+
 		"where MONTH(Tanggal) >= "+Start+" And MONTH(Tanggal) <= "+End+" And YEAR(Tanggal) = "+Year;
 	if(Option==1)
-		query = "select TrHeader.IDHeader,Karyawan,format(Tanggal, 'dd/mmm/yyyy') as Waktu, SUM(Qty) as Total "+
+		query = "select TrHeader.IDHeader,Karyawan,format(Tanggal, 'dd/mmm/yyyy') as Waktu, Format(SUM(Qty), 'Standard') as Total "+
 		"from TrHeader inner join TrDetail on TrHeader.IDHeader=TrDetail.IDHeader "+
 		"where MONTH(Tanggal) >= "+Start+" And MONTH(Tanggal) <= "+End+" And YEAR(Tanggal) = "+Year+
 		" group by TrHeader.IDHeader,Karyawan,Tanggal";
 	if(Option==2)
-		query = "select TrHeader.IDHeader,Karyawan,format(Tanggal, 'dd/mmm/yyyy') as Waktu, AVG(Qty) as Total "+
+		query = "select TrHeader.IDHeader,Karyawan,format(Tanggal, 'dd/mmm/yyyy') as Waktu, Format(AVG(Qty), 'Standard') as Total "+
 		"from TrHeader inner join TrDetail on TrHeader.IDHeader=TrDetail.IDHeader "+
 		"where MONTH(Tanggal) >= "+Start+" And MONTH(Tanggal) <= "+End+" And YEAR(Tanggal) = "+Year+
 		" group by TrHeader.IDHeader,Karyawan,Tanggal";
